@@ -66,8 +66,12 @@ export default function Home() {
             <div className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 text-center group transform hover:-translate-y-2 border border-gray-100">
               <div className="text-6xl mb-6 transform group-hover:scale-110 transition-transform duration-300">🔧</div>
               <h3 className="text-2xl font-bold mb-4 text-gray-800">บริการซ่อม</h3>
-              <p className="text-gray-600 leading-relaxed mb-2">ทีมช่างมืออาชีพพร้อมให้บริการด้วยอุปกรณ์ทันสมัย</p>
-              <p className="text-sm text-primary-600 font-semibold">ลงรอม • ปลดล็อก Android / iPhone • ซ่อมครบวงจร</p>
+              <div className="text-gray-600 leading-relaxed mb-2 space-y-1 text-sm">
+                <p>💻 ซ่อมโทรศัพท์ทุกอาการ – หน้าจอแตก, แบตเสื่อม, กล้องเสีย</p>
+                <p>📲 ลงรอม / อัปเกรดระบบ – ปรับแต่งรอม ลงเฟิร์มแวร์</p>
+                <p>🔓 ปลดล็อกทุกระบบ – Android / iPhone / iCloud / FRP</p>
+              </div>
+              <p className="text-sm text-primary-600 font-semibold mt-3">⚡ ครบวงจร – รับประกันทุกงานซ่อม</p>
             </div>
           </div>
         </div>
