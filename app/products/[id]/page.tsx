@@ -161,12 +161,16 @@ export default function ProductDetailPage() {
             </span>
           </div>
 
-          <button 
-            className="w-full bg-primary-600 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed text-lg"
-            disabled={product.stock === 0}
+          <a 
+            href={product.stock > 0 ? `https://m.me/VantaBlackService?text=${encodeURIComponent(`สวัสดีครับ/คะ สนใจสั่งซื้อสินค้า "${product.name}" ครับ/คะ`)}` : '#'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`w-full bg-primary-600 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-700 transition text-lg text-center block ${
+              product.stock === 0 ? 'bg-gray-400 cursor-not-allowed pointer-events-none' : ''
+            }`}
           >
-            {product.stock > 0 ? 'สั่งซื้อสินค้า' : 'สินค้าหมด'}
-          </button>
+            {product.stock > 0 ? `💬 สั่งซื้อสินค้า "${product.name}"` : 'สินค้าหมด'}
+          </a>
         </div>
       </div>
     </div>
