@@ -1,10 +1,31 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showAdmin, setShowAdmin] = useState(false)
+
+  useEffect(() => {
+    // ตรวจสอบ query parameter สำหรับเปิดใช้งาน admin
+    const urlParams = new URLSearchParams(window.location.search)
+    const adminKey = urlParams.get('admin')
+    
+    if (adminKey === 'vantablack2025') {
+      localStorage.setItem('admin_enabled', 'true')
+      setShowAdmin(true)
+      // ลบ query parameter ออกจาก URL
+      if (window.history.replaceState) {
+        const newUrl = window.location.pathname + (window.location.search.replace(/[?&]admin=vantablack2025/, ''))
+        window.history.replaceState({}, '', newUrl)
+      }
+    } else {
+      // ตรวจสอบว่ามี admin_enabled ใน localStorage หรือไม่
+      const adminEnabled = localStorage.getItem('admin_enabled')
+      setShowAdmin(adminEnabled === 'true')
+    }
+  }, [])
 
   return (
     <nav className="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50 border-b border-gray-100">
@@ -36,9 +57,11 @@ export default function Navbar() {
               ติดต่อ
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link href="/admin" className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-5 py-2 rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold">
-              หลังบ้าน
-            </Link>
+            {showAdmin && (
+              <Link href="/admin" className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-5 py-2 rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold">
+                หลังบ้าน
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,13 +117,15 @@ export default function Navbar() {
               >
                 ติดต่อ
               </Link>
-              <Link 
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-5 py-2 rounded-lg text-center font-semibold mt-2"
-              >
-                หลังบ้าน
-              </Link>
+              {showAdmin && (
+                <Link 
+                  href="/admin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-5 py-2 rounded-lg text-center font-semibold mt-2"
+                >
+                  หลังบ้าน
+                </Link>
+              )}
             </div>
           </div>
         )}
