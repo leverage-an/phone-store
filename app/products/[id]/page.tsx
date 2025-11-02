@@ -24,6 +24,18 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+  const [gender, setGender] = useState<'male' | 'female' | null>(null)
+
+  // ฟังก์ชันสำหรับสร้างข้อความตามเพศ
+  const getMessage = (productName: string) => {
+    if (gender === 'male') {
+      return `สวัสดีครับ สนใจสั่งซื้อสินค้า "${productName}" ครับ`
+    } else if (gender === 'female') {
+      return `สวัสดีคะ สนใจสั่งซื้อสินค้า "${productName}" คะ`
+    } else {
+      return `สวัสดีครับ/คะ สนใจสั่งซื้อสินค้า "${productName}" ครับ/คะ`
+    }
+  }
 
   useEffect(() => {
     if (params.id) {
@@ -161,10 +173,55 @@ export default function ProductDetailPage() {
             </span>
           </div>
 
+          {/* ส่วนเลือกเพศ */}
+          {product.stock > 0 && (
+            <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <label className="block text-sm font-semibold text-gray-700 mb-3">
+                กรุณาเลือกเพศของคุณ:
+              </label>
+              <div className="flex gap-4">
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    checked={gender === 'male'}
+                    onChange={(e) => setGender(e.target.value as 'male')}
+                    className="w-4 h-4 text-primary-600 focus:ring-primary-500 focus:ring-2"
+                  />
+                  <span className="ml-2 text-gray-700">👨 ผู้ชาย (ครับ)</span>
+                </label>
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    checked={gender === 'female'}
+                    onChange={(e) => setGender(e.target.value as 'female')}
+                    className="w-4 h-4 text-primary-600 focus:ring-primary-500 focus:ring-2"
+                  />
+                  <span className="ml-2 text-gray-700">👩 ผู้หญิง (คะ)</span>
+                </label>
+              </div>
+            </div>
+          )}
+
           <a 
-            href={product.stock > 0 ? `https://m.me/VantaBlackService?text=${encodeURIComponent(`สวัสดีครับ/คะ สนใจสั่งซื้อสินค้า "${product.name}" ครับ/คะ`)}` : '#'}
+            href={product.stock > 0 ? `https://m.me/VantaBlackService?text=${encodeURIComponent(getMessage(product.name))}` : '#'}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => {
+              if (product.stock === 0) {
+                e.preventDefault()
+                return
+              }
+              // ถ้ายังไม่ได้เลือกเพศ ให้เตือน
+              if (!gender) {
+                e.preventDefault()
+                alert('กรุณาเลือกเพศของคุณก่อนสั่งซื้อสินค้าครับ/คะ')
+                return
+              }
+            }}
             className={`w-full bg-primary-600 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-700 transition text-lg text-center block ${
               product.stock === 0 ? 'bg-gray-400 cursor-not-allowed pointer-events-none' : ''
             }`}
