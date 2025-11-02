@@ -108,7 +108,7 @@ export default function ProductsPage() {
   
   // รวมแบรนด์ที่มีในสินค้าและแบรนด์ทั้งหมด
   const existingBrands = Array.from(new Set(products.map(p => p.brand)))
-  const brands = [...new Set([...allBrands, ...existingBrands])].sort()
+  const brands = Array.from(new Set([...allBrands, ...existingBrands])).sort()
   const maxPrice = Math.max(...products.map(p => p.price), 100000)
 
   if (loading) {
